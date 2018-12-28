@@ -78,9 +78,7 @@ public class UserServlet extends BaseServlet {
             //select * from user where username = ? and  password = ?
             user2 = userService.userLogin(user);
             System.out.println(user2);
-            request.setAttribute("loginUser", user2);
-//            request.getRequestDispatcher("index.jsp").forward(request,response);
-//            request.setAttribute("loginUser",user2);
+            request.getSession().setAttribute("loginUser", user2);
             response.sendRedirect("index.jsp");
             return null;//不做重定向转发
         } catch (Exception e) {

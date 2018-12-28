@@ -1,4 +1,7 @@
-<%@ page import="javafx.scene.control.Alert" %><%--
+<%@ page import="javafx.scene.control.Alert" %>
+<%@ page import="java.util.List" %>
+<%@ page import="javax.mail.Session" %>
+<%@ page import="com.heima.domain.User" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2018\12\24 0024
@@ -7,6 +10,7 @@
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -16,9 +20,14 @@
     <script src="${pageContext.request.contextPath}/js/bootstrap.min.js" type="text/javascript"></script>
 </head>
 <body>
-<!--
-            	描述：菜单栏
-            -->
+<%
+    User user = (User) request.getSession().getAttribute("loginUser");
+    String username = null;
+    if (null != user) {
+        username = user.getUsername();
+    }
+%>
+
 <div class="container-fluid">
     <div class="col-md-4">
         <img src="${pageContext.request.contextPath}/img/logo2.png"/>
@@ -27,18 +36,24 @@
         <img src="${pageContext.request.contextPath}/img/header.png"/>
     </div>
     <div class="col-md-3" style="padding-top:20px">
-        <ol class="list-inline">
-            <c:if test="${empty loginUser}">
-                <li><a href="${pageContext.request.contextPath}/jsp/login.jsp">登录</a></li>
-                <li><a href="${pageContext.request.contextPath}/UserServlet?method=registUI">注册</a></li>
-            </c:if>
 
-            <c:if test="${not empty loginUser}">
-                <li>欢迎${loginUser.username}</li>
-                <li><a href="${pageContext.request.contextPath}/UserServlet?method=logOut">退出</a></li>
-                <li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车</a></li>
-                <li><a href="${pageContext.request.contextPath}/jsp/order_list.jsp">我的订单</a></li>
-            </c:if>
+        <ol class="list-inline">
+            <% if (null == session.getAttribute("loginUser")) {
+            %>
+            <li><a href="${pageContext.request.contextPath}/jsp/login.jsp">登录</a></li>
+            <li><a href="${pageContext.request.contextPath}/UserServlet?method=registUI">注册</a></li>
+            <%
+                }%>
+
+            <% if (session.getAttribute("loginUser") != null) {
+            %>
+            <li>欢迎<%=username%>
+            </li>
+            <li><a href="${pageContext.request.contextPath}/UserServlet?method=logOut">退出</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/cart.jsp">购物车</a></li>
+            <li><a href="${pageContext.request.contextPath}/jsp/order_list.jsp">我的订单</a></li>
+            <%
+                }%>
         </ol>
     </div>
 </div>
@@ -65,13 +80,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav" id="myUL">
                     <%--<li class="active"><a--%>
-                            <%--href="${pageContext.request.contextPath}/jsp/product_list.jsp">手机数码<span--%>
-                            <%--class="sr-only">(current)</span></a></li>--%>
+                    <%--href="${pageContext.request.contextPath}/jsp/product_list.jsp">手机数码<span--%>
+                    <%--class="sr-only">(current)</span></a></li>--%>
                     <%--<li><a href="#">电脑办公</a></li>--%>
                     <%--<li><a href="#">电脑办公</a></li>--%>
-                        <%--<c:forEach items="${allcats}" var="c">--%>
-                            <%--<li><a href="#">${c.cname}</a></li>--%>
-                        <%--</c:forEach>--%>
+                    <%--<c:forEach items="${allcats}" var="c">--%>
+                    <%--<li><a href="#">${c.cname}</a></li>--%>
+                    <%--</c:forEach>--%>
                 </ul>
                 <form class="navbar-form navbar-right" role="search">
                     <div class="form-group">
@@ -89,14 +104,14 @@
 </body>
 <script>
     var url = "/CategoryServlet";
-    var obj = {"method":"findAllCats"};
+    var obj = {"method": "findAllCats"};
     $(function () {
-        $.post(url,obj,function (data) {
-            $.each(data,function (i,obj) {
-                var li = "<li><a href='/ProductServlet?method=findProductByCidWithPage&num=1&cid="+obj.cid+"'>"+ obj.cname +"</a></li>";
+        $.post(url, obj, function (data) {
+            $.each(data, function (i, obj) {
+                var li = "<li><a href='/ProductServlet?method=findProductByCidWithPage&num=1&cid=" + obj.cid + "'>" + obj.cname + "</a></li>";
                 $("#myUL").append(li);
             });
-        },"json");
+        }, "json");
     });
 </script>
 </html>
