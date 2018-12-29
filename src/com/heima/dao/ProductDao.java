@@ -11,7 +11,7 @@ public interface ProductDao {
 
     List<Product> findNews() throws SQLException;
 
-    List<Product> findProByPid(String pid) throws SQLException;
+    Product findProByPid(String pid) throws SQLException;
 
     int findTotalPage(String cid) throws SQLException;
 

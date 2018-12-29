@@ -12,7 +12,7 @@ public interface PoductService {
 
     List<Product> finNews() throws SQLException;
 
-    List<Product> findProByPid(String pid)  throws SQLException;;
+    Product findProByPid(String pid)  throws SQLException;
 
     PageModel findProductByCidWithPage(String cid, int num) throws SQLException;
 

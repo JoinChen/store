@@ -23,7 +23,7 @@ public class ProductServiceImpl implements PoductService {
     }
 
     @Override
-    public List<Product> findProByPid(String pid) throws SQLException {
+    public Product findProByPid(String pid) throws SQLException {
         return productDao.findProByPid(pid);
     }
 

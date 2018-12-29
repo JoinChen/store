@@ -4,6 +4,7 @@ import com.heima.dao.ProductDao;
 import com.heima.domain.Product;
 import com.heima.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.ScalarHandler;
 import sun.security.provider.certpath.CertId;
@@ -28,10 +29,10 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> findProByPid(String pid) throws SQLException {
+    public Product findProByPid(String pid) throws SQLException {
         String sql = "SELECT * FROM product WHERE  pid =?";
         QueryRunner runner = new QueryRunner(JDBCUtils.getDataSource());
-        return runner.query(sql,new BeanListHandler<Product>(Product.class),pid);
+        return runner.query(sql,new BeanHandler<>(Product.class),pid);
     }
 
     @Override

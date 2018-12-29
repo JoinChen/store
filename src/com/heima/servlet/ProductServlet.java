@@ -21,9 +21,9 @@ public class ProductServlet extends BaseServlet {
     public String findProByPid(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SQLException {
         String pid = request.getParameter("pid");
         PoductService poductService = new ProductServiceImpl();
-        List<Product> list = poductService.findProByPid(pid);
-        request.setAttribute("product",list);
-        System.out.println(list.toString());
+        Product product = poductService.findProByPid(pid);
+        request.setAttribute("product",product);
+//        System.out.println(list.toString());
         return "/jsp/product_info.jsp";
     }
 
