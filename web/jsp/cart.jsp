@@ -37,15 +37,11 @@
         }
     </style>
 </head>
-
 <body>
-
-
 <!--
     描述：菜单栏
 -->
 <%@include file="/jsp/header.jsp" %>
-
 
 <div class="container">
     <c:if test="${empty cart.cartItems}">
@@ -71,43 +67,44 @@
                 </tr>
 
                 <c:forEach items="${cart.cartItems}" var="item">
-                <tr class="active">
-                    <td width="60" width="40%">
-                        <input type="hidden" name="id" value="22">
-                        <img src="${pageContext.request.contextPath}/${item.product.pimage}" width="70" height="60">
-                    </td>
-                    <td width="30%">
-                        <a target="_blank">${item.product.pname}</a>
-                    </td>
-                    <td width="20%">
-                        ￥${item.product.shop_price}
-                    </td>
-                    <td width="10%">
-                        <input type="text" name="quantity" value="${item.num}" maxlength="4" size="10">
-                    </td>
-                    <td width="15%">
-                        <span class="subtotal">￥${item.subTotal}</span>
-                    </td>
-                    <td>
-                        <a href="javascript:;" class="delete">删除</a>
-                    </td>
-                </tr>
-
-                </tbody>
+                    <tr class="active">
+                        <td width="60" width="40%">
+                            <input type="hidden" name="id" value="22">
+                            <img src="${pageContext.request.contextPath}/${item.product.pimage}" width="70" height="60">
+                        </td>
+                        <td width="30%">
+                            <a target="_blank">${item.product.pname}</a>
+                        </td>
+                        <td width="20%">
+                            ￥${item.product.shop_price}
+                        </td>
+                        <td width="10%">
+                            <input type="text" name="quantity" value="${item.num}" maxlength="4" size="10">
+                        </td>
+                        <td width="15%">
+                            <span class="subtotal">￥${item.subTotal}</span>
+                        </td>
+                        <td>
+                            <a href="javascript:;" id="${item.product.pid}" class="delete">删除</a>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </ >
             </table>
         </div>
+
     </div>
 
     <div style="margin-right:130px;">
         <div style="text-align:right;">
             <em style="color:#ff6600;">
                 登录后确认是否享有优惠&nbsp;&nbsp;
-            </em> 赠送积分: <em style="color:#ff6600;">${item.subTotal}</em>&nbsp; 商品金额: <strong
-                style="color:#ff6600;">￥${item.subTotal}元</strong>
+            </em> 赠送积分: <em style="color:#ff6600;">${cart.total}</em>&nbsp; 商品金额: <strong
+                style="color:#ff6600;">￥${cart.total}元</strong>
         </div>
         <div style="text-align:right;margin-top:10px;margin-bottom:10px;">
-            <a href="${pageContext.request.contextPath}/jsp/order_info.jsp" id="clear" class="clear">清空购物车</a>
-            <a href="${pageContext.request.contextPath}/jsp/order_info.jsp">
+            <a href="javascript:;" id="clear" class="clear">清空购物车</a>
+            <a href="${pageContext.request.contextPath}/OrderServlet?method=saveOrder">
                     <%--提交表单 --%>
                 <input type="submit" width="100" value="提交订单" name="submit" border="0"
                        style="background: url('${pageContext.request.contextPath}/img/register.gif') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
@@ -117,11 +114,25 @@
     </div>
 
 </div>
-</c:forEach>
 </c:if>
-
 <%@include file="/jsp/footer.jsp" %>
-
 </body>
 
+<script !src="">
+    $(function () {
+        $(".delete").click(function () {
+            if (confirm("确认删除?")) {
+                //获取删除商品的id
+                var pid = this.id;
+                window.location.href = "/CartServlet?method=removeCartItem&id=" + pid;
+            }
+        });
+
+        $(".clear").click(function () {
+            if (confirm("确认要清空购物车吗?")){
+                window.location.href="/CartServlet?method=clearCart";
+            }
+        });
+    });
+</script>
 </html>

@@ -31,7 +31,7 @@ public class Cart {
 
 
     //返回MAP中所有的值
-    public Collection getCartItems(){
+    public Collection<CartItem> getCartItems(){
         return map.values();
     }
 
