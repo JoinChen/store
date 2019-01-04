@@ -48,7 +48,7 @@
                             订单编号:${order.oid}
                             总金额:¥${order.total}元
                             <c:if test="${order.state==1}">
-                                <a href="">付款</a>
+                                <a href="${pageContext.request.contextPath}/OrderServlet?method=findOrderByOid&oid=${order.oid}">付款</a>
                             </c:if>
                             <c:if test="${order.state==2}">
                                 未发货

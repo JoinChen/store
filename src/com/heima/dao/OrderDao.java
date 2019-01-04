@@ -15,4 +15,8 @@ public interface OrderDao {
     void saveOrderItem(Connection connection, OrderItem item) throws Exception;
 
     List findMyOrdersWithPage(User user, int startIndex, int pageSize) throws Exception;
+
+    Order findOrderByOid(String oid) throws Exception;
+
+    void updateOrder(Order order) throws Exception;
 }

@@ -63,4 +63,14 @@ public class OrderServiceImp implements OrderService {
         pageModel.setUrl("OrderServlet?method=findMyOrdersWithPage");
         return pageModel;
     }
+
+    @Override
+    public Order findOrderByOid(String oid) throws Exception {
+        return orderDao.findOrderByOid(oid);
+    }
+
+    @Override
+    public void updateOrder(Order order) throws Exception {
+        orderDao.updateOrder(order);
+    }
 }
