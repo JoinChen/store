@@ -58,7 +58,6 @@ public class UploadUtils {
 		
 		String dir = getDir(realName);
 		System.out.println(dir);
-		
-		
+
 	}
 }
