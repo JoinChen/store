@@ -36,4 +36,17 @@ public class ProductServiceImpl implements PoductService {
         pageModel.setUrl("ProductServlet?method=findProductByCidWithPage&cid="+cid);
         return  pageModel;
     }
+
+    @Override
+    public PageModel findAllProductsWithPage(int curNum) throws SQLException {
+        //创建对象
+        int totalRecords = productDao.findTotalRecords();
+        PageModel pm = new PageModel(curNum,5,totalRecords);
+        //关联集合
+        List<Product> list =  productDao.findAllProductsWithPage(pm.getStartIndex(),pm.getPageSize());
+        pm.setList(list);
+        //关联url
+        pm.setUrl("AdminProductServlet?method=findAllProductsWithPage");
+        return pm;
+    }
 }

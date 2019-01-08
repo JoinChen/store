@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CategoryService {
     List<Category> getAllCats() throws SQLException;
+
+    void addCategory(Category category) throws SQLException;
 }
