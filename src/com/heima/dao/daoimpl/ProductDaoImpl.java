@@ -60,8 +60,17 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> findAllProductsWithPage(int startIndex, int pageSize) throws SQLException {
-        String sql = "select * from product limit  ?,?";
+        String sql = "select * from product order by pdate desc limit  ?,?";
         QueryRunner runner = new QueryRunner(JDBCUtils.getDataSource());
         return runner.query(sql,new BeanListHandler<Product>(Product.class),startIndex,pageSize);
+    }
+
+    @Override
+    public void saveProduct(Product product) throws SQLException {
+        String sql = "insert into product values (?,?,?,?,?,?,?,?,?,?)";
+        QueryRunner runner = new QueryRunner(JDBCUtils.getDataSource());
+        Object [] params = {product.getPid(),product.getPname(),product.getMarket_price(),product.getShop_price(),
+                product.getPimage(),product.getPdate(),product.getIs_hot(),product.getPdesc(),product.getPflag(),product.getCid()};
+        runner.update(sql,params);
     }
 }

@@ -49,4 +49,9 @@ public class ProductServiceImpl implements PoductService {
         pm.setUrl("AdminProductServlet?method=findAllProductsWithPage");
         return pm;
     }
+
+    @Override
+    public void saveProduct(Product product) throws SQLException {
+        productDao.saveProduct(product);
+    }
 }

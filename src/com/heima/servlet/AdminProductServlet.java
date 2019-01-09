@@ -3,12 +3,16 @@ package com.heima.servlet;
 import com.alipay.api.domain.PreOrderResult;
 import com.heima.base.BaseServlet;
 import com.heima.domain.Category;
+import com.heima.domain.Product;
 import com.heima.service.CategoryService;
 import com.heima.service.PoductService;
 import com.heima.service.serviceImp.CategoryServiceImp;
 import com.heima.service.serviceImp.ProductServiceImpl;
 import com.heima.utils.PageModel;
+import com.heima.utils.UUIDUtils;
 import com.heima.utils.UploadUtils;
+import com.sun.org.apache.bcel.internal.generic.NEW;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItem;
@@ -23,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +60,7 @@ public class AdminProductServlet extends BaseServlet {
 
     public String addProduct(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Map<String,String> map = new HashMap<String, String>();
+        Product product = new Product();
         try {
             //内部原理:利用req.getInputstream;获取到请求提中全部数据,进行拆分和封装
             DiskFileItemFactory fac = new DiskFileItemFactory();
@@ -95,11 +101,20 @@ public class AdminProductServlet extends BaseServlet {
                     IOUtils.closeQuietly(inputStream);
                     IOUtils.closeQuietly(outputStream);
                     //向map中存入一个键值对map
-                    System.out.println("最终:"+"/products/3"+dir+"/"+finalFile);
-                    map.put("pimage",dir+"/"+finalFile);
+                    System.out.println("最终:"+"/products/3"+dir+"/"+newFileName);
+                    map.put("pimage","products/3"+dir+"/"+newFileName);
                 }
             }
-        } catch (FileUploadException e) {
+            //使用polulate将map放到product
+            BeanUtils.populate(product,map);
+            product.setPid(UUIDUtils.getId());
+            product.setPdate(new Date());
+            product.setPflag(0);
+            //调用service_dao将user中的携带的数据存储到数据库
+            PoductService service = new ProductServiceImpl();
+            service.saveProduct(product);
+            resp.sendRedirect("/AdminProductServlet?method=findAllProductsWithPage&num=1");
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //转发到页面
